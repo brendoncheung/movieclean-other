@@ -2,7 +2,9 @@ package com.alephreach.remote;
 
 import com.alephreach.data.repository.MovieRemote;
 import com.alephreach.domain.model.Movie;
+import com.alephreach.domain.model.PopularMovie;
 import com.alephreach.remote.service.MovieApiService;
+import com.alephreach.remote.service.MovieServiceFactory;
 
 import java.util.List;
 
@@ -17,8 +19,8 @@ public class MovieRemoteImpl implements MovieRemote {
     }
 
     @Override
-    public Observable<List<Movie>> getPopularMovies() {
-        return mMovieApiService.getPopularMovie();
+    public Observable<PopularMovie> getPopularMovies() {
+        return mMovieApiService.getPopularMovie(MovieServiceFactory.API_KEY);
     }
 
 

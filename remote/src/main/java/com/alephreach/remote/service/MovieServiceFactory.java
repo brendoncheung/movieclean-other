@@ -6,10 +6,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieServiceFactory {
 
-    private static String API_KEY = "6fffa22d1ba58423a952b48709479f7d";
+    public static String API_KEY = "6fffa22d1ba58423a952b48709479f7d";
 
     public MovieApiService getMovieApiService(Boolean isDebug) {
 
@@ -22,6 +23,7 @@ public class MovieServiceFactory {
                 .baseUrl("https://api.themoviedb.org/")
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         return retrofit.create(MovieApiService.class);

@@ -1,7 +1,7 @@
 package com.alephreach.movieclean.injection;
 
 import com.alephreach.movieclean.MainActivity;
-import com.alephreach.movieclean.module.RemoteModule;
+import com.alephreach.movieclean.injection.module.RemoteModule;
 
 import dagger.Component;
 

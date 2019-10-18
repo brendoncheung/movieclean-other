@@ -1,4 +1,4 @@
-package com.alephreach.movieclean.module;
+package com.alephreach.movieclean.injection.module;
 
 import com.alephreach.movieclean.BuildConfig;
 import com.alephreach.remote.service.MovieApiService;

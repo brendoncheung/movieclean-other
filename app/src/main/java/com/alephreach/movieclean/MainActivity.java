@@ -4,6 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.alephreach.domain.model.Movie;
+import com.alephreach.domain.model.PopularMovie;
+import com.alephreach.movieclean.injection.DaggerApplicationComponent;
+import com.alephreach.remote.service.MovieApiService;
+import com.alephreach.remote.service.MovieServiceFactory;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -13,27 +23,26 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Observer<String> mObserver;
+    @Inject
+    MovieApiService mMovieApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        mObservable.just(greeting)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(mObserver);
+        initialization();
 
-        Observer<String> observer = new Observer<String>() {
+        Observer<PopularMovie> observer = new Observer<PopularMovie>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(String s) {
-                Log.d("MainActivity", s);
+            public void onNext(PopularMovie movies) {
+                for (Movie movie : movies.getPopularMovie()) {
+                    Log.d("MainActivty", movie.getTitle());
+                }
             }
 
             @Override
@@ -47,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        execute(observer, "Hellow");
+        mMovieApiService.getPopularMovie(MovieServiceFactory.API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
-
+        Log.d("MainActivity", mMovieApiService.toString());
     }
 
     private <T> void execute(Observer<T> observer, T t) {
@@ -62,6 +74,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialization() {
-
+        DaggerApplicationComponent.builder().build().inject(this);
     }
 }
